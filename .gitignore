@@ -32,6 +32,10 @@
 *.out
 *.app
 
+#Ect
+*.ilk
+*.pdb
+
 ### VisualStudioCode ###
 .vscode/*
 #!.vscode/settings.json
