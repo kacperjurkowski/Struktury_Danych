@@ -1,5 +1,5 @@
 #include <iostream>
-#include "dynamic_array.h"
+#include "dynamic_array.hpp"
 
 DynamicArray::DynamicArray(int initial_capacity) {
     capacity = initial_capacity;
