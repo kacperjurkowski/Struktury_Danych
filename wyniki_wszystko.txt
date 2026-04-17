@@ -1,0 +1,17 @@
+Struktura;Rozmiar;Seed;Operacja;Czas_ns
+Tablica;5000;6830
+Tablica;10000;14560
+Tablica;20000;25490
+Tablica;40000;48380
+Tablica;60000;81090
+Tablica;80000;105670
+Tablica;100000;142030
+Tablica;120000;176940
+Lista_Jednokierunkowa;5000;120
+Lista_Jednokierunkowa;10000;150
+Lista_Jednokierunkowa;20000;120
+Lista_Jednokierunkowa;40000;170
+Lista_Jednokierunkowa;60000;190
+Lista_Jednokierunkowa;80000;250
+Lista_Jednokierunkowa;100000;220
+Lista_Jednokierunkowa;120000;240

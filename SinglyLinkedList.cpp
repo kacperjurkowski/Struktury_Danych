@@ -26,7 +26,7 @@ void SinglyLinkedList::addFront(int value) {
 }
 
 // Dodawanie na koniec - O(1)
-void SinglyLinkedList::addBack(int value) {
+void SinglyLinkedList::addEnd(int value) {
     Node* newNode = new Node(value);
     if (tail == nullptr) {
         head = tail = newNode;
@@ -42,7 +42,7 @@ void SinglyLinkedList::addAt(int index, int value) {
     if (index <= 0) {
         addFront(value);
     } else if (index >= size) {
-        addBack(value);
+        addEnd(value);
     } else {
         Node* newNode = new Node(value);
         Node* temp = head;
@@ -68,7 +68,7 @@ void SinglyLinkedList::removeFront() {
 }
 
 // Usuwanie z końca - O(n)
-void SinglyLinkedList::removeBack() {
+void SinglyLinkedList::removeEnd() {
     if (head == nullptr) return;
 
     if (head == tail) {
@@ -92,7 +92,7 @@ void SinglyLinkedList::removeAt(int index) {
     if (index == 0) {
         removeFront();
     } else if (index == size - 1) {
-        removeBack();
+        removeEnd();
     } else {
         Node* temp = head;
         for (int i = 0; i < index - 1; i++) {

@@ -23,12 +23,12 @@ public:
 
     // Dodawanie elementów
     void addFront(int value);
-    void addBack(int value);
+    void addEnd(int value);
     void addAt(int index, int value);
 
     // Usuwanie elementów
     void removeFront();
-    void removeBack();
+    void removeEnd();
     void removeAt(int index);
 
     // Pozostałe funkcje

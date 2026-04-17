@@ -9,8 +9,8 @@ private:
 
     void doubling();
 public:
-DynamicArray(int initial_capacity = 10);
-    ~DynamicArray(); //zwalnianie tablicy
+    DynamicArray(); //Konstruktor
+    ~DynamicArray(); //Dekonstruktor
 
     void addFront(int value); //dodanie na początek
     void addEnd(int value); //dodanie na koniec
@@ -20,7 +20,7 @@ DynamicArray(int initial_capacity = 10);
     void removeEnd(); //usunięcie z końca
     void removeAt(int index); //usunięcie losowo
 
-    int search(int value); //zwrócenie elementu na pozycji i
+    bool search(int value); //zwrócenie elementu na pozycji i
     void print(); //wyświetlenie
 };
 
