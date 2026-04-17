@@ -33,7 +33,7 @@ void DoublyLinkedList::addEnd(int value) {
         head = tail = newNode;
     } else {
         newNode->prev = tail;
-        head->prev = newNode;
+        tail->next = newNode;
         tail = newNode;
     }
     size++;
@@ -48,7 +48,7 @@ void DoublyLinkedList::addAt(int index, int value) {
     } else {
         Node* newNode = new Node(value);
         Node* temp = head;
-        for (int i = 0; i < index - 1; i++) {
+        for (int i = 0; i < index; i++) {
             temp = temp->next;
         }
 
@@ -104,7 +104,7 @@ void DoublyLinkedList::removeAt(int index) {
         removeEnd();
     } else {
         Node* temp = head;
-        for (int i = 0; i < index - 1; i++) {
+        for (int i = 0; i < index; i++) {
             temp = temp->next;
         }
 

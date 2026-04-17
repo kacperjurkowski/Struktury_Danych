@@ -20,7 +20,7 @@ private:
 
 public:
     DoublyLinkedList();
-    DoublyLinkedList();
+    ~DoublyLinkedList();
 
     // Dodawanie elementów
     void addFront(int value);
