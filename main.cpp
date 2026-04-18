@@ -342,7 +342,7 @@ int main() {
         if (wybor == 4){
             {
             ofstream clearFile("wyniki_wszystko.txt");
-            clearFile << "Struktura;Rozmiar;Seed;Operacja;Czas_ns\n";
+            clearFile << "Struktura;Rozmiar;Operacja;Czas_ns\n";
             }
             runResearch<DynamicArray>("wyniki_wszystko.txt", "Tablica");
             runResearch<SinglyLinkedList>("wyniki_wszystko.txt", "Lista_Jednokierunkowa");
