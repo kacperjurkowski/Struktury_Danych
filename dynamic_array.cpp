@@ -106,7 +106,7 @@ void DynamicArray::removeAt(int index) {
     size--;
 }
 
-bool DynamicArray::search(int value){
+bool DynamicArray::find(int value){
     //Pętla, przechodząca przez wszystkie elementy tablicy
     for(int i = 0; i < size; i++){
         //Warunek zwracający prawdę, jeżeli znajdzie element w tablicy

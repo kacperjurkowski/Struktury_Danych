@@ -4,15 +4,16 @@
 #include <iostream>
 
 // pojedynczy element listy
-struct Node {
-    int data;       // 4 bajtowa liczba
-    Node* next;     // Wskaźnik na kolejny element
-
-    Node(int value) : data(value), next(nullptr) {}
-};
 
 class SinglyLinkedList {
 private:
+    struct Node {
+        int data;       // 4 bajtowa liczba
+        Node* next;     // Wskaźnik na kolejny element
+
+        Node(int value) : data(value), next(nullptr) {}
+    };
+
     Node* head;     // Wskaźnik na początek listy 
     Node* tail;     // Wskaźnik na koniec listy 
     int size;       // Przechowuje aktualny rozmiar listy

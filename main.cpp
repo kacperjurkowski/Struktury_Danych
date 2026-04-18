@@ -9,15 +9,16 @@
 
 #include "dynamic_array.hpp"
 #include "SinglyLinkedList.hpp"
+#include "DoublyLinkedList.hpp"
 
 using namespace std;
 using namespace std::chrono;
 
-void generujDane(DynamicArray &da, int quantity) {
+template <typename T>
+void generujDane(T &ds, int quantity) {
     for (int i = 0; i < quantity; i++) {
-        da.addEnd(rand() % 10000); // Losowe liczby od 0 do 9999
+        ds.addEnd(rand() % 10000);
     }
-    cout << "Wygenerowano " << quantity << " elementow.\n";
 }
 
 template <typename T>
@@ -27,25 +28,82 @@ void runResearch(string fileName, string structureName) {
     int seedy[] = {1670, 42, 123, 2024, 67, 888, 55, 99, 1010, 11};
 
     for (int n : rozmiary) {
-        vector<long long> wynikiDlaRozmiaru;
+        vector<long long> t_addF, t_addE, t_addA, t_remF, t_remE, t_remA, t_find;
 
         for (int s : seedy) {
             T ds;
             srand(s);
             for (int i = 0; i < n; i++) ds.addEnd(rand() % 10000);
 
-            auto start = high_resolution_clock::now();
-            ds.addFront(rand() % 10000); // Badana operacja
-            auto stop = high_resolution_clock::now();
+            int val = rand() % 10000;
+            int idx = (ds.getSize() > 0) ? rand() % ds.getSize() : 0;
 
-            wynikiDlaRozmiaru.push_back(duration_cast<nanoseconds>(stop - start).count());
+            high_resolution_clock::time_point start, stop;
+
+            // 1. Add Front
+            start = high_resolution_clock::now();
+            ds.addFront(val);
+            stop = high_resolution_clock::now();
+            t_addF.push_back(duration_cast<nanoseconds>(stop - start).count());
+            ds.removeFront(); // Przywrócenie rozmiaru N
+
+            // 2. Add End
+            start = high_resolution_clock::now();
+            ds.addEnd(val);
+            stop = high_resolution_clock::now();
+            t_addE.push_back(duration_cast<nanoseconds>(stop - start).count());
+            ds.removeEnd(); // Przywrócenie rozmiaru N
+
+            // 3. Add At
+            start = high_resolution_clock::now();
+            ds.addAt(idx, val);
+            stop = high_resolution_clock::now();
+            t_addA.push_back(duration_cast<nanoseconds>(stop - start).count());
+            ds.removeAt(idx); // Przywrócenie rozmiaru N
+
+            // 4. Remove Front
+            start = high_resolution_clock::now();
+            ds.removeFront();
+            stop = high_resolution_clock::now();
+            t_remF.push_back(duration_cast<nanoseconds>(stop - start).count());
+            ds.addFront(val); // Przywrócenie rozmiaru N
+
+            // 5. Remove End
+            start = high_resolution_clock::now();
+            ds.removeEnd();
+            stop = high_resolution_clock::now();
+            t_remE.push_back(duration_cast<nanoseconds>(stop - start).count());
+            ds.addEnd(val); // Przywrócenie rozmiaru N
+
+            // 6. Remove At
+            start = high_resolution_clock::now();
+            ds.removeAt(idx);
+            stop = high_resolution_clock::now();
+            t_remA.push_back(duration_cast<nanoseconds>(stop - start).count());
+            ds.addAt(idx, val); // Przywrócenie rozmiaru N
+
+            // 7. Search
+            start = high_resolution_clock::now();
+            ds.find(val);
+            stop = high_resolution_clock::now();
+            t_find.push_back(duration_cast<nanoseconds>(stop - start).count());
         }
 
-        // Obliczamy średnią z 10 seedów dla danego rozmiaru N
-        long long srednia = accumulate(wynikiDlaRozmiaru.begin(), wynikiDlaRozmiaru.end(), 0LL) / wynikiDlaRozmiaru.size();
+        // Funkcja pomocnicza do zapisu średniej
+        auto saveAvg = [&](string op, vector<long long>& v) {
+            long long avg = accumulate(v.begin(), v.end(), 0LL) / v.size();
+            file << structureName << ";" << n << ";" << op << ";" << avg << "\n";
+        };
         
-        cout << structureName << " (N=" << n << "): " << srednia << " ns" << endl;
-        file << structureName << ";" << n << ";" << srednia << "\n";
+        saveAvg("addFront", t_addF);
+        saveAvg("addEnd", t_addE);
+        saveAvg("addAt", t_addA);
+        saveAvg("removeFront", t_remF);
+        saveAvg("removeEnd", t_remE);
+        saveAvg("removeAt", t_remA);
+        saveAvg("find", t_find);
+
+        cout << "  N=" << n << " zakonczone." << endl;
     }
     file.close();
 }
@@ -55,6 +113,7 @@ int main() {
     int wybor, wyborP1, wyborP2, wyborP3;
     DynamicArray da;
     SinglyLinkedList sll;
+    DoublyLinkedList dll;
     high_resolution_clock::time_point start, end;
 
     do {
@@ -78,13 +137,14 @@ int main() {
                 cout << "5. Usuwanie z poczatku (removeFront)\n";
                 cout << "6. Usuwanie z konca (removeEnd)\n";
                 cout << "7. Usuwanie losowo (removeAt)\n";
-                cout << "8. Przeszukiwanie (search)\n";
+                cout << "8. Przeszukiwanie (find)\n";
                 cout << "0. Powrot do menu glownego\n";
                 cout << "Wybor: ";
                 cin >> wyborP1;
 
                 switch(wyborP1){
-                    case 1: int quantity;
+                    case 1: 
+                        int quantity;
                         cout << "Ile elementow wygenerowac? ";
                         cin >> quantity;
 
@@ -125,7 +185,7 @@ int main() {
                         break;
                     case 8: 
                         start = high_resolution_clock::now();
-                        da.search(rand() % 10000); 
+                        da.find(rand() % 10000); 
                         end = high_resolution_clock::now();
                         break;        
                 }
@@ -149,7 +209,7 @@ int main() {
                 cout << "5. Usuwanie z poczatku (removeFront)\n";
                 cout << "6. Usuwanie z konca (removeEnd)\n";
                 cout << "7. Usuwanie losowo (removeAt)\n";
-                cout << "8. Przeszukiwanie (search)\n";
+                cout << "8. Przeszukiwanie (find)\n";
                 cout << "0. Powrot do menu glownego\n";
                 cout << "Wybor: ";
                 cin >> wyborP2;
@@ -160,7 +220,7 @@ int main() {
                         cin >> quantity;
 
                         start = high_resolution_clock::now();
-                        generujDane(da, quantity); 
+                        generujDane(sll, quantity); 
                         end = high_resolution_clock::now();
                         
                         break;
@@ -219,7 +279,7 @@ int main() {
                 cout << "5. Usuwanie z poczatku (removeFront)\n";
                 cout << "6. Usuwanie z konca (removeEnd)\n";
                 cout << "7. Usuwanie losowo (removeAt)\n";
-                cout << "8. Przeszukiwanie (search)\n";
+                cout << "8. Przeszukiwanie (find)\n";
                 cout << "0. Powrot do menu glownego\n";
                 cout << "Wybor: ";
                 cin >> wyborP3;
@@ -230,43 +290,43 @@ int main() {
                         cin >> quantity;
 
                         start = high_resolution_clock::now();
-                        generujDane(da, quantity); 
+                        generujDane(dll, quantity); 
                         end = high_resolution_clock::now();
                         
                         break;
                     case 2: 
                         start = high_resolution_clock::now();
-                        da.addFront(rand() % 10000); 
+                        dll.addFront(rand() % 10000); 
                         end = high_resolution_clock::now();
                         break;
                     case 3: 
                         start = high_resolution_clock::now();
-                        da.addEnd(rand() % 10000); 
+                        dll.addEnd(rand() % 10000); 
                         end = high_resolution_clock::now();
                         break;
                     case 4: 
                         start = high_resolution_clock::now();
-                        da.addAt(0, rand() % 10000); 
+                        dll.addAt(0, rand() % 10000); 
                         end = high_resolution_clock::now();
                         break;
                     case 5: 
                         start = high_resolution_clock::now();
-                        da.removeFront(); 
+                        dll.removeFront(); 
                         end = high_resolution_clock::now();
                         break;
                     case 6: 
                         start = high_resolution_clock::now();
-                        da.removeEnd(); 
+                        dll.removeEnd(); 
                         end = high_resolution_clock::now();
                         break;
                     case 7: 
                         start = high_resolution_clock::now();
-                        da.removeAt(0); 
+                        dll.removeAt(0); 
                         end = high_resolution_clock::now();
                         break;
                     case 8: 
                         start = high_resolution_clock::now();
-                        da.search(rand() % 10000); 
+                        dll.find(rand() % 10000); 
                         end = high_resolution_clock::now();
                         break;        
                 }
@@ -286,7 +346,7 @@ int main() {
             }
             runResearch<DynamicArray>("wyniki_wszystko.txt", "Tablica");
             runResearch<SinglyLinkedList>("wyniki_wszystko.txt", "Lista_Jednokierunkowa");
-            //runResearch<DoublyLinkedList>("wyniki_wszystko.txt", "Lista_Dwukierunkowa");
+            runResearch<DoublyLinkedList>("wyniki_wszystko.txt", "Lista_Dwukierunkowa");
 
             cout << "Wszystkie pomiary zakonczone!" << endl;
             break;

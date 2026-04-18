@@ -4,16 +4,18 @@
 #include <iostream>
 
 // pojedynczy element listy
-struct Node {
-    int data;       // 4 bajtowa liczba
-    Node* next;     // Wskaźnik na kolejny element
-    Node* prev;
 
-    Node(int value) : data(value), next(nullptr), prev(nullptr) {}
-};
 
 class DoublyLinkedList {
 private:
+    struct Node {
+        int data;       // 4 bajtowa liczba
+        Node* next;     // Wskaźnik na kolejny element
+        Node* prev;
+
+        Node(int value) : data(value), next(nullptr), prev(nullptr) {}
+    };
+
     Node* head;     // Wskaźnik na początek listy 
     Node* tail;     // Wskaźnik na koniec listy 
     int size;       // Przechowuje aktualny rozmiar listy

@@ -20,8 +20,10 @@ public:
     void removeEnd(); //usunięcie z końca
     void removeAt(int index); //usunięcie losowo
 
-    bool search(int value); //zwrócenie elementu na pozycji i
+    bool find(int value); //zwrócenie elementu na pozycji i
     void print(); //wyświetlenie
+
+    int getSize() const { return size; }
 };
 
 #endif
