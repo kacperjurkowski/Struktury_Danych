@@ -9,18 +9,18 @@ SinglyLinkedList::~SinglyLinkedList() {
 // Czyszczenie listy
 void SinglyLinkedList::clear() {
     while (head != nullptr) {
-        removeFront();
+        removeFront();                          // Usuwa elementy aż do opróżnienia listy
     }
 }
 
 // Dodawanie na początek - O(1)
 void SinglyLinkedList::addFront(int value) {
-    Node* newNode = new Node(value);
+    Node* newNode = new Node(value);            // Alokacja nowego węzła
     if (head == nullptr) {
-        head = tail = newNode;
+        head = tail = newNode;                  // Pierwszy element zostaje głową i ogonem
     } else {
-        newNode->next = head;
-        head = newNode;
+        newNode->next = head;                   // Nowy wskazuje na obecną głowę
+        head = newNode;                         // Aktualizacja głowy
     }
     size++;
 }
@@ -29,10 +29,10 @@ void SinglyLinkedList::addFront(int value) {
 void SinglyLinkedList::addEnd(int value) {
     Node* newNode = new Node(value);
     if (tail == nullptr) {
-        head = tail = newNode;
+        head = tail = newNode;                  // Lista była pusta
     } else {
-        tail->next = newNode;
-        tail = newNode;
+        tail->next = newNode;                   // Obecny ogon wskazuje na nowy element
+        tail = newNode;                         // Nowy element staje się ogonem
     }
     size++;
 }
@@ -47,10 +47,10 @@ void SinglyLinkedList::addAt(int index, int value) {
         Node* newNode = new Node(value);
         Node* temp = head;
         for (int i = 0; i < index - 1; i++) {
-            temp = temp->next;
+            temp = temp->next;                  // Szukanie węzła przed miejscem wstawienia
         }
-        newNode->next = temp->next;
-        temp->next = newNode;
+        newNode->next = temp->next;             // Nowy przejmuje resztę listy
+        temp->next = newNode;                   // Węzeł przed wskazuje na nowy
         size++;
     }
 }
@@ -60,11 +60,11 @@ void SinglyLinkedList::removeFront() {
     if (head == nullptr) return;
 
     Node* temp = head;
-    head = head->next;
-    delete temp;
+    head = head->next;                          // Głowa przeskakuje na następny element
+    delete temp;                                // Usunięcie starej głowy
     size--;
 
-    if (head == nullptr) tail = nullptr; // Obsługa listy jednoelementowej
+    if (head == nullptr) tail = nullptr;        // Obsługa listy jednoelementowej
 }
 
 // Usuwanie z końca - O(n)
@@ -73,15 +73,15 @@ void SinglyLinkedList::removeEnd() {
 
     if (head == tail) {
         delete head;
-        head = tail = nullptr;
+        head = tail = nullptr;                  // Usuwanie jedynego elementu
     } else {
         Node* temp = head;
         while (temp->next != tail) {
-            temp = temp->next;
+            temp = temp->next;                  // Szukanie przedostatniego elementu
         }
-        delete tail;
-        tail = temp;
-        tail->next = nullptr;
+        delete tail;                            // Usunięcie ostatniego
+        tail = temp;                            // Przedostatni staje się ogonem
+        tail->next = nullptr;                   // Odcięcie starego ogona
     }
     size--;
 }
@@ -96,11 +96,11 @@ void SinglyLinkedList::removeAt(int index) {
     } else {
         Node* temp = head;
         for (int i = 0; i < index - 1; i++) {
-            temp = temp->next;
+            temp = temp->next;                  // Znalezienie węzła przed usuwanym
         }
         Node* toDelete = temp->next;
-        temp->next = toDelete->next;
-        delete toDelete;
+        temp->next = toDelete->next;            // Pominięcie usuwanego węzła
+        delete toDelete;                        // Zwolnienie pamięci
         size--;
     }
 }
@@ -109,8 +109,8 @@ void SinglyLinkedList::removeAt(int index) {
 bool SinglyLinkedList::find(int value) {
     Node* temp = head;
     while (temp != nullptr) {
-        if (temp->data == value) return true;
-        temp = temp->next;
+        if (temp->data == value) return true;   // Znaleziono wartość
+        temp = temp->next;                      // Przejście do kolejnego węzła
     }
     return false;
 }
@@ -123,7 +123,7 @@ void SinglyLinkedList::display() {
     }
     Node* temp = head;
     while (temp != nullptr) {
-        std::cout << temp->data << " -> ";
+        std::cout << temp->data << " -> ";      // Wypisanie danych
         temp = temp->next;
     }
     std::cout << "NULL" << std::endl;
