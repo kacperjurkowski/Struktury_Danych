@@ -1,5 +1,3 @@
-# Struktury_Danych
-
 # 🚀 Analiza Wydajności Struktur Danych – Miniprojekt 1
 
 Repozytorium zawiera implementację oraz badania wydajnościowe trzech podstawowych struktur danych w języku C++. Celem projektu było porównanie rzeczywistych czasów operacji z ich złożonością teoretyczną.
