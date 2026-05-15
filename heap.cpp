@@ -1,14 +1,13 @@
 #include <iostream>
 #include "heap.hpp"
 
-//Heap::Heap() : array(nullptr), capacity(0), size(0) {}
-
 Heap::~Heap() {
     //delete[] array;
 }
 
 void Heap::insert(int e, int p) {
-    
+    data.insert(e, p);
+    heapify_up(data.getSize() - 1);
 }
 
 void Heap::extract_max() {

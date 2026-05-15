@@ -17,16 +17,13 @@ public:
     DynamicArray(); //Konstruktor
     ~DynamicArray(); //Dekonstruktor
 
-    void addFront(int value); //dodanie na początek
-    void addEnd(int value); //dodanie na koniec
-    void addAt(int index, int value); //dodanie losowo
-    
-    void removeFront(); //usunięcie z poczatku
-    void removeEnd(); //usunięcie z końca
-    void removeAt(int index); //usunięcie losowo
-
-    bool find(int value); //zwrócenie elementu na pozycji i
-    void print(); //wyświetlenie
+    void insert(int e, int p);          //Dodanie elementu e o priorytecie p
+    void extract_max();                 //Usunięcie i zwrócenie elementu o największym priorytecie
+    void peek();                        //Zwrócenie elementu o największym priorytecie,
+    void decrease_key(int e, int p);    //Zmniejszenie priorytetu elementu e na p
+    void increase_key(int e, int p);    //Zwiększenie priorytetu elementu e na p
+    int return_size();                 //Zwrócenie rozmiaru
+    void print();                       //Wyświetlenie kopca
 
     int getSize() const { return size; }
 };

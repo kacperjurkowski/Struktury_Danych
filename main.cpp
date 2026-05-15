@@ -73,7 +73,7 @@ void runResearch(string fileName, string structureName) {
 
             // 3. Peek
             start = high_resolution_clock::now();
-            ds.peek(v, p);
+            ds.peek();
             stop = high_resolution_clock::now();
             t_peek.push_back(duration_cast<nanoseconds>(stop - start).count());
 
@@ -124,8 +124,15 @@ int main() {
     mt19937 gen(1670); //Seed nadany do testów manualnych
 
     int wybor, wyborP1, wyborP2, wyborP3;
-    DynamicArray da;
+    int quantity = 50;
+    Heap h;
     high_resolution_clock::time_point start, end;
+
+    uniform_int_distribution<int> distValue(0, 100000);
+    uniform_int_distribution<int> distPriority(0, quantity * 10);
+
+    int v = distValue(gen);         //Wygenerowany element
+    int p = distPriority(gen);      //Wygenerowany priorytet
 
     do {
         cout << "--- HUB PROJEKTOWY: STRUKTURY DANYCH ---\n";
@@ -140,51 +147,52 @@ int main() {
             do {
                 system("cls");
                 cout << "--- KOPIEC ---\n";
-                cout << "1. Insert (Wartość + Priorytet)\n";
+                cout << "1. Generuj losowe dane\n";
                 cout << "2. Extract_max\n";
                 cout << "3. Peek\n";
-                cout << "4. Modify Key\n";
-                cout << "5. Print\n";
-                cout << "6. Return_size\n";
+                cout << "4. Decrease_key\n";
+                cout << "5. Increase_key\n";
+                cout << "6. Print\n";
+                cout << "7. Return_size\n";
                 cout << "Wybor: ";
                 cin >> wyborP1;
 
                 switch(wyborP1){
                     case 1: 
-                        int quantity;
-                        cout << "Ile elementow wygenerowac? ";
-                        cin >> quantity;
-
                         start = high_resolution_clock::now();
-                        generujDane(da, quantity, gen); 
+                        generujDane(h, quantity, gen); 
                         end = high_resolution_clock::now();
-                        
                         break;
                     case 2: 
                         start = high_resolution_clock::now();
-                        da.addFront(rand() % 10000); 
+                        h.extract_max();
                         end = high_resolution_clock::now();
                         break;
                     case 3: 
                         start = high_resolution_clock::now();
-                        da.addEnd(rand() % 10000); 
+                        h.peek();
                         end = high_resolution_clock::now();
                         break;
                     case 4: 
                         start = high_resolution_clock::now();
-                        da.addAt(rand() % da.getSize(), rand() % 10000); 
-                        end = high_resolution_clock::now();
-                        break;
-                    case 5: 
-                        start = high_resolution_clock::now();
-                        da.removeFront(); 
-                        end = high_resolution_clock::now();
-                        break;
-                    case 6: 
-                        start = high_resolution_clock::now();
-                        da.removeEnd(); 
+                        h.decrease_key(v, p);
                         end = high_resolution_clock::now();
                         break;      
+                    case 5: 
+                        start = high_resolution_clock::now();
+                        h.increase_key(v, p);
+                        end = high_resolution_clock::now();
+                        break;      
+                    case 6: 
+                        start = high_resolution_clock::now();
+                        h.print();
+                        end = high_resolution_clock::now();
+                        break;
+                    case 7: 
+                        start = high_resolution_clock::now();
+                        h.return_size();
+                        end = high_resolution_clock::now();
+                        break;  
                 }
 
                 if (wyborP1 != 0 && wyborP1 != 7) {
@@ -194,6 +202,11 @@ int main() {
                 }
             } while (wyborP1 != 0);
         }
+
+
+
+        // --- TRZEBA ZAAKTUALIZOWAĆ DRUGIEGO SWITCHA ---
+
 
         if(wybor == 2){
             do {
@@ -211,51 +224,18 @@ int main() {
                 cout << "Wybor: ";
                 cin >> wyborP2;
 
+                
                 switch(wyborP2){
                     case 1: int quantity;
                         cout << "Ile elementow wygenerowac? ";
                         cin >> quantity;
 
                         start = high_resolution_clock::now();
-                        generujDane(da, quantity, gen); 
+                        generujDane(h, quantity, gen); 
                         end = high_resolution_clock::now();
                         
                         break;
-                    case 2: 
-                        start = high_resolution_clock::now();
-                        da.addFront(rand() % 10000); 
-                        end = high_resolution_clock::now();
-                        break;
-                    case 3: 
-                        start = high_resolution_clock::now();
-                        da.addEnd(rand() % 10000); 
-                        end = high_resolution_clock::now();
-                        break;
-                    case 4: 
-                        start = high_resolution_clock::now();
-                        da.addAt(rand() % da.getSize(), rand() % 10000); 
-                        end = high_resolution_clock::now();
-                        break;
-                    case 5: 
-                        start = high_resolution_clock::now();
-                        da.removeFront(); 
-                        end = high_resolution_clock::now();
-                        break;
-                    case 6: 
-                        start = high_resolution_clock::now();
-                        da.removeEnd(); 
-                        end = high_resolution_clock::now();
-                        break;
-                    case 7: 
-                        start = high_resolution_clock::now();
-                        da.removeAt(rand() % da.getSize()); 
-                        end = high_resolution_clock::now();
-                        break;
-                    case 8: 
-                        start = high_resolution_clock::now();
-                        da.find(rand() % 10000); 
-                        end = high_resolution_clock::now();
-                        break;        
+                          
                 }
                 if (wyborP2 != 0 && wyborP2 != 9) {
                     auto duration = duration_cast<nanoseconds>(end - start);
@@ -270,7 +250,7 @@ int main() {
             ofstream clearFile("wyniki_wszystko.txt");
             clearFile << "Struktura;Rozmiar;Operacja;Czas_ns\n";
             }
-            runResearch<DynamicArray>("wyniki_wszystko.txt", "Tablica");
+            runResearch<DynamicArray>("wyniki_wszystko.txt", "Tablica_Dynamiczna");
 
             cout << "Wszystkie pomiary zakonczone!" << endl;
             break;

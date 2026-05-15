@@ -16,7 +16,7 @@ void DynamicArray::doubling() {
     }
 
     //Alokacja nowej tablicy o pojemności capacity
-    int* new_array = new int[capacity];
+    HeapNode* new_array = new HeapNode[capacity];
 
     //Pętla, która kopiuje elementy ze starej tablicy do nowej
     for(int i = 0; i < size; i++) {
@@ -30,89 +30,53 @@ void DynamicArray::doubling() {
     array = new_array;
 }
 
-void DynamicArray::addFront(int value) {
+void DynamicArray::insert(int e, int p) {
     //Jeśli ilość elementów jest równy rozmiarowi tablicy, zwiększamy rozmiar tablicy
     if(size == capacity) {
         doubling();
     }
     
-    //Przesunięcie wszystkich elementów w prawo zaczynając od końca
-    for(int i = size; i > 0; i--) {
-        array[i] = array[i - 1];
-    }
-    
-    //Dodanie nowego elementu na początek
-    array[0] = value;
-    //Zwiększenie ilości elementów o 1
+    array[size].value = e;
+    array[size].priority = p;
     size++;
 }
 
-void DynamicArray::addEnd(int value) {
-    //Jeśli ilość elementów jest równy rozmiarowi tablicy, zwiększamy rozmiar tablicy
-    if(size == capacity) {
-        doubling();
-    }
-    //Dodanie elementu do tablicy na końcu
-    array[size++] = value;
-}
-
-void DynamicArray::addAt(int index, int value) {
-    //Jeśli ilość elementów jest równy rozmiarowi tablicy, zwiększamy rozmiar tablicy
-    if (size == capacity) {
-        doubling();
-    }
-    //Przesunięcie wszystkich elementów w prawo zaczynając od końca, aż po miejsce, w które zostało losowo wybrane
-    for(int i = size; i > index; i--){
-        array[i] = array[i - 1];
-    }
-    //Dodanie elementu do tablicy na losowo wygenerowanym miejscu
-    array[index] = value;
-    //Zwiększenie ilości elementów o 1
-    size++;
-}
-
-void DynamicArray::removeFront(){
-    //Sprawdzenie, czy tablica jest pusta
-    if(size > 0) {
-        //Pętla przechodząca przez elementy tablicy, aż po ilość elementów - 1
-        for(int i = 0; i < size - 1; i++){
-            //Nadpisanie poprzednich elementów następnymi
-            array[i] = array[i+1];
-        }
-        //Zmniejszenie ilości elementów o 1
-        size--;
-    }
-}
-
-void DynamicArray::removeEnd() {
-    //Sprawdzenie, czy tablica jest pusta
-    if(size > 0){
-        //Zmniejszenie ilości elementów o 1
-        size--;
-    }
-}
-
-
-// ============DODAĆ KOMENTARZ================
-void DynamicArray::removeAt(int index) {
-    
-    if (index < 0 || index >= size) {
+void DynamicArray::extract_max() {
+    if(size == 0){
         return;
     }
-
-    for(int i = index; i < size - 1; i++){
-        array[i] = array[i + 1];
+    int maxIdx = 0;
+    for(int i = 1; i < size; i++){
+        if(array[i].priority > array[maxIdx].priority) {
+            maxIdx = i;
+        }
     }
+
+    HeapNode temp = array[maxIdx];
+    array[maxIdx] = array[size - 1];
+    array[size - 1] = temp;
     size--;
 }
 
-bool DynamicArray::find(int value){
-    //Pętla, przechodząca przez wszystkie elementy tablicy
-    for(int i = 0; i < size; i++){
-        //Warunek zwracający prawdę, jeżeli znajdzie element w tablicy
-        if(array[i] == value) {
-            return true;
-        }
+void DynamicArray::peek() {
+    if (size == 0){
+        return;
     }
-    return false;
+
+    //Wyświetla pierwszy element Kopca, bo zawsze będzie miał największy priorytet
+    std::cout << "Element: " << array[0].value << "Priorytet: " << array[0].priority << std::endl;
+}
+
+int DynamicArray::return_size(){
+    return size; //Zwraca rozmiar struktury
+}
+
+void DynamicArray::print(){
+    if (size == 0){
+        return;
+    }
+
+    for(int i  = 1; i < size; i++){
+        std::cout << array[i].value << " " << array[i].priority << std::endl;
+    }
 }

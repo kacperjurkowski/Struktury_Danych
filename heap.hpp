@@ -1,7 +1,11 @@
 #ifndef HEAP_H
 #define HEAP_H
+#include "dynamic_array.hpp"
 
 class Heap {
+
+private:
+    DynamicArray data;
 
 public:
     Heap();     //Konstruktor
@@ -13,9 +17,10 @@ public:
     void decrease_key(int e, int p);    //Zmniejszenie priorytetu elementu e na p
     void increase_key(int e, int p);    //Zwiększenie priorytetu elementu e na p
     void return_size();                 //Zwrócenie rozmiaru
+    void print();                       //Wyświetlenie kopca
 
-    void heapify_up();                  //
-    void heapify_down();                //
+    void heapify_up(int index);                  //
+    void heapify_down(int index);                //
 
 };
 
