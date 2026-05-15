@@ -12,12 +12,12 @@ public:
     ~Heap();    //Dekonstruktor
 
     void insert(int e, int p);          //Dodanie elementu e o priorytecie p
-    void extract_max();                 //Usunięcie i zwrócenie elementu o największym priorytecie
-    void peek();                        //Zwrócenie elementu o największym priorytecie,
+    void extractMax();                 //Usunięcie i zwrócenie elementu o największym priorytecie
+    int peek();                        //Zwrócenie elementu o największym priorytecie,
     void decrease_key(int e, int p);    //Zmniejszenie priorytetu elementu e na p
     void increase_key(int e, int p);    //Zwiększenie priorytetu elementu e na p
-    void return_size();                 //Zwrócenie rozmiaru
-    void print();                       //Wyświetlenie kopca
+    int return_size() const { return data.getSize(); }              //Zwrócenie rozmiaru
+    void display();                       //Wyświetlenie kopca
 
     void heapify_up(int index);                  //
     void heapify_down(int index);                //

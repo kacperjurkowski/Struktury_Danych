@@ -16,7 +16,7 @@ void DynamicArray::doubling() {
     }
 
     //Alokacja nowej tablicy o pojemności capacity
-    HeapNode* new_array = new HeapNode[capacity];
+    Element* new_array = new Element[capacity];
 
     //Pętla, która kopiuje elementy ze starej tablicy do nowej
     for(int i = 0; i < size; i++) {
@@ -30,53 +30,38 @@ void DynamicArray::doubling() {
     array = new_array;
 }
 
-void DynamicArray::insert(int e, int p) {
+void DynamicArray::addEnd(Element value) {
     //Jeśli ilość elementów jest równy rozmiarowi tablicy, zwiększamy rozmiar tablicy
     if(size == capacity) {
         doubling();
     }
-    
-    array[size].value = e;
-    array[size].priority = p;
-    size++;
+    //Dodanie elementu do tablicy na końcu
+    array[size++] = value;
 }
 
-void DynamicArray::extract_max() {
-    if(size == 0){
+void DynamicArray::removeEnd() {
+    //Sprawdzenie, czy tablica jest pusta
+    if(size > 0){
+        //Zmniejszenie ilości elementów o 1
+        size--;
+    }
+}
+
+void DynamicArray::removeAt(int index) {
+    
+    if (index < 0 || index >= size) {
         return;
     }
-    int maxIdx = 0;
-    for(int i = 1; i < size; i++){
-        if(array[i].priority > array[maxIdx].priority) {
-            maxIdx = i;
-        }
-    }
 
-    HeapNode temp = array[maxIdx];
-    array[maxIdx] = array[size - 1];
-    array[size - 1] = temp;
+    for(int i = index; i < size - 1; i++){
+        array[i] = array[i + 1];
+    }
     size--;
 }
 
-void DynamicArray::peek() {
-    if (size == 0){
-        return;
-    }
-
-    //Wyświetla pierwszy element Kopca, bo zawsze będzie miał największy priorytet
-    std::cout << "Element: " << array[0].value << "Priorytet: " << array[0].priority << std::endl;
-}
-
-int DynamicArray::return_size(){
-    return size; //Zwraca rozmiar struktury
-}
-
-void DynamicArray::print(){
-    if (size == 0){
-        return;
-    }
-
-    for(int i  = 1; i < size; i++){
-        std::cout << array[i].value << " " << array[i].priority << std::endl;
-    }
+void DynamicArray::clear() {
+    delete[] array;
+    array = nullptr;
+    size = 0;
+    capacity = 0;
 }

@@ -7,6 +7,7 @@
 #include <string> //Przechowywanie fileName
 
 #include "dynamic_array.hpp"
+#include "PriorityQueueArray.hpp"
 #include "heap.hpp"
 
 using namespace std;
@@ -46,11 +47,11 @@ void runResearch(string fileName, string structureName) {
             T ds; //Tworzenie nowej instancji struktury (Tablica Dynamiczna/Lista Jednokierunkowa/Lista Dwukierunkowa)
             mt19937 gen(s); //Generator o konkretnym seedzie
 
+            generujDane(ds, n, gen);        //Wypełnienie struktury do rozmiaru N
+
             //Zakresy (4 bajtowa liczba całkowita / większy priorytet niż wielkość struktury)
             uniform_int_distribution<int> distValue(0, 100000);
             uniform_int_distribution<int> distPriority(0, n * 10);
-
-            generujDane(ds, n, gen);        //Wypełnienie struktury do rozmiaru N
 
             int v = distValue(gen);         //Wygenerowany element
             int p = distPriority(gen);      //Wygenerowany priorytet
@@ -62,11 +63,11 @@ void runResearch(string fileName, string structureName) {
             ds.insert(v, p);
             stop = high_resolution_clock::now();
             t_ins.push_back(duration_cast<nanoseconds>(stop - start).count());
-            ds.extract_max(); //Przywrócenie rozmiaru 
+            ds.extractMax(); //Przywrócenie rozmiaru 
 
-            // 2. Extract_max
+            // 2. ExtractMax
             start = high_resolution_clock::now();
-            ds.extract_max();
+            ds.extractMax();
             stop = high_resolution_clock::now();
             t_ext.push_back(duration_cast<nanoseconds>(stop - start).count());
             ds.insert(v, p); //Przywrócenie rozmiaru 
@@ -109,13 +110,13 @@ void runResearch(string fileName, string structureName) {
         
         //Zapis średnich dla bieżącego rozmiaru
         saveAvg("insert", t_ins);
-        saveAvg("extract_max", t_ext);
+        saveAvg("extractMax", t_ext);
         saveAvg("peek", t_peek);
         saveAvg("decrease_key", t_dec);
         saveAvg("increase_key", t_inc);
         saveAvg("return_size", t_ret);
 
-        cout << "  N=" << n << " zakonczone." << endl;
+        cout << " Struktura: " << structureName << "N=" << n << " zakonczone." << endl;
     }
     file.close();
 }
@@ -123,21 +124,17 @@ void runResearch(string fileName, string structureName) {
 int main() {
     mt19937 gen(1670); //Seed nadany do testów manualnych
 
-    int wybor, wyborP1, wyborP2, wyborP3;
+    int wybor, wyborP1, wyborP2, wyborP3, v_man, p_man;;
     int quantity = 50;
+
     Heap h;
+    PriorityQueueArray pqa;
     high_resolution_clock::time_point start, end;
-
-    uniform_int_distribution<int> distValue(0, 100000);
-    uniform_int_distribution<int> distPriority(0, quantity * 10);
-
-    int v = distValue(gen);         //Wygenerowany element
-    int p = distPriority(gen);      //Wygenerowany priorytet
 
     do {
         cout << "--- HUB PROJEKTOWY: STRUKTURY DANYCH ---\n";
         cout << "1. Kolejka Priorytetowa - Kopiec\n";
-        cout << "2. Kolejka Priorytetowa - XYZ\n";
+        cout << "2. Kolejka Priorytetowa - Tablica Nieposortowana\n";
         cout << "3. Automatyczne Badania\n";
         cout << "0. Wyjscie\n";
         cout << "Wybor: ";
@@ -146,14 +143,15 @@ int main() {
         if(wybor == 1){
             do {
                 system("cls");
-                cout << "--- KOPIEC ---\n";
-                cout << "1. Generuj losowe dane\n";
-                cout << "2. Extract_max\n";
+                cout << "--- MENU: KOPIEC ---\n";
+                cout << "1. Generuj losowe dane (" << quantity << ")\n";
+                cout << "2. ExtractMax\n";
                 cout << "3. Peek\n";
                 cout << "4. Decrease_key\n";
                 cout << "5. Increase_key\n";
-                cout << "6. Print\n";
-                cout << "7. Return_size\n";
+                cout << "6. Wyswietl (Display))\n";
+                cout << "7. Rozmiar (Return_size)\n";
+                cout << "0. Powrot do menu glownego\n";
                 cout << "Wybor: ";
                 cin >> wyborP1;
 
@@ -165,33 +163,38 @@ int main() {
                         break;
                     case 2: 
                         start = high_resolution_clock::now();
-                        h.extract_max();
+                        h.extractMax();
                         end = high_resolution_clock::now();
                         break;
                     case 3: 
                         start = high_resolution_clock::now();
-                        h.peek();
+                        cout << "Element o najwyzszym priorytecie: " << h.peek() << endl;
                         end = high_resolution_clock::now();
                         break;
                     case 4: 
+                        cout << "Podaj wartosc i nowy priorytet: ";
+                        cin >> v_man >> p_man;
                         start = high_resolution_clock::now();
-                        h.decrease_key(v, p);
+                        h.decrease_key(v_man, p_man);
                         end = high_resolution_clock::now();
                         break;      
                     case 5: 
+                        cout << "Podaj wartosc i nowy priorytet: ";
+                        cin >> v_man >> p_man;
                         start = high_resolution_clock::now();
-                        h.increase_key(v, p);
+                        h.increase_key(v_man, p_man);
                         end = high_resolution_clock::now();
                         break;      
                     case 6: 
                         start = high_resolution_clock::now();
-                        h.print();
+                        h.display();
                         end = high_resolution_clock::now();
                         break;
                     case 7: 
                         start = high_resolution_clock::now();
-                        h.return_size();
+                        cout << "Aktualny rozmiar struktury: " << h.return_size() << endl;
                         end = high_resolution_clock::now();
+                        system("pause");
                         break;  
                 }
 
@@ -203,41 +206,64 @@ int main() {
             } while (wyborP1 != 0);
         }
 
-
-
-        // --- TRZEBA ZAAKTUALIZOWAĆ DRUGIEGO SWITCHA ---
-
-
         if(wybor == 2){
             do {
                 system("cls");
-                cout << "--- LISTA JEDNOKIERUNKOWA ---\n";
-                cout << "1. Generuj losowe dane\n";
-                cout << "2. Dodanie na poczatek (addFront)\n";
-                cout << "3. Dodanie na koniec (addEnd)\n";
-                cout << "4. Dodanie losowo (addAt)\n";
-                cout << "5. Usuwanie z poczatku (removeFront)\n";
-                cout << "6. Usuwanie z konca (removeEnd)\n";
-                cout << "7. Usuwanie losowo (removeAt)\n";
-                cout << "8. Przeszukiwanie (find)\n";
+                cout << "--- LISTA NIEPOSORTOWANA ---\n";
+                cout << "1. Generuj losowe dane (" << quantity << ")\n";
+                cout << "2. ExtractMax\n";
+                cout << "3. Peek\n";
+                cout << "4. Decrease_key\n";
+                cout << "5. Increase_key\n";
+                cout << "6. Wyswietl (Display)\n";
+                cout << "7. Rozmiar (Return_size)\n";
                 cout << "0. Powrot do menu glownego\n";
                 cout << "Wybor: ";
                 cin >> wyborP2;
 
-                
                 switch(wyborP2){
-                    case 1: int quantity;
-                        cout << "Ile elementow wygenerowac? ";
-                        cin >> quantity;
-
+                    case 1: 
                         start = high_resolution_clock::now();
-                        generujDane(h, quantity, gen); 
+                        generujDane(pqa, quantity, gen); 
                         end = high_resolution_clock::now();
-                        
                         break;
-                          
+                    case 2: 
+                        start = high_resolution_clock::now();
+                        pqa.extractMax();
+                        end = high_resolution_clock::now();
+                        break;
+                    case 3: 
+                        start = high_resolution_clock::now();
+                        cout << "Element o najwyzszym priorytecie: " << pqa.peek() << endl;
+                        end = high_resolution_clock::now();
+                        break;
+                    case 4: 
+                        cout << "Podaj wartosc i nowy priorytet: ";
+                        cin >> v_man >> p_man;
+                        start = high_resolution_clock::now();
+                        pqa.decrease_key(v_man, p_man);
+                        end = high_resolution_clock::now();
+                        break;      
+                    case 5: 
+                        cout << "Podaj wartosc i nowy priorytet: ";
+                        cin >> v_man >> p_man;
+                        start = high_resolution_clock::now();
+                        pqa.increase_key(v_man, p_man);
+                        end = high_resolution_clock::now();
+                        break;    
+                    case 6: 
+                        start = high_resolution_clock::now();
+                        pqa.display();
+                        end = high_resolution_clock::now();
+                        break;
+                    case 7: 
+                        start = high_resolution_clock::now();
+                        pqa.return_size();
+                        cout << "Aktualny rozmiar struktury: " << pqa.return_size() << endl;
+                        end = high_resolution_clock::now();
+                        break;
                 }
-                if (wyborP2 != 0 && wyborP2 != 9) {
+                if (wyborP2 != 0 && wyborP1 != 7) {
                     auto duration = duration_cast<nanoseconds>(end - start);
                     cout << "\nCzas wykonania operacji: " << duration.count() << " ns\n";
                     system("pause");
@@ -246,11 +272,12 @@ int main() {
         }
 
         if (wybor == 3){
-            {
-            ofstream clearFile("wyniki_wszystko.txt");
+            ofstream clearFile("wyniki.txt");
             clearFile << "Struktura;Rozmiar;Operacja;Czas_ns\n";
-            }
-            runResearch<DynamicArray>("wyniki_wszystko.txt", "Tablica_Dynamiczna");
+            clearFile.close();
+            
+            runResearch<Heap>("wyniki.txt", "Kopiec");
+            runResearch<PriorityQueueArray>("wyniki.txt", "Tablica_Nieposortowana");
 
             cout << "Wszystkie pomiary zakonczone!" << endl;
             break;

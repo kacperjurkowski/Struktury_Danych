@@ -1,31 +1,31 @@
 #ifndef DYNAMIC_ARRAY_H
 #define DYNAMIC_ARRAY_H 
 
-struct HeapNode {
-        int priority;   //Klucz p
-        int value;      //Element e
-    };
+// Struktura elementu kolejki
+struct Element {
+    int priority; 
+    int value;    
+};
 
 class DynamicArray {
 private:
-    HeapNode* array; //wskaźnik na tablicę utworzoną dynamicznie
-    int capacity; //rozmiar tablicy array
-    int size; //liczba przechowywanych elementów
+    Element* array;                 //Wskaźnik na tablicę utworzoną dynamicznie
+    int capacity;                   //Rozmiar tablicy array
+    int size;                       //Liczba przechowywanych elementów
 
     void doubling();
 public:
-    DynamicArray(); //Konstruktor
-    ~DynamicArray(); //Dekonstruktor
+    DynamicArray();                 //Konstruktor
+    ~DynamicArray();                //Dekonstruktor
 
-    void insert(int e, int p);          //Dodanie elementu e o priorytecie p
-    void extract_max();                 //Usunięcie i zwrócenie elementu o największym priorytecie
-    void peek();                        //Zwrócenie elementu o największym priorytecie,
-    void decrease_key(int e, int p);    //Zmniejszenie priorytetu elementu e na p
-    void increase_key(int e, int p);    //Zwiększenie priorytetu elementu e na p
-    int return_size();                 //Zwrócenie rozmiaru
-    void print();                       //Wyświetlenie kopca
+    void addEnd(Element value);     //Dodanie na koniec
+    void removeEnd();               //Usunięcie z końca
+    void removeAt(int index);       //Usunięcie losowo
 
+    // Metody pomocnicze dla kolejki
+    Element& get(int index) { return array[index]; }
     int getSize() const { return size; }
+    void clear();
 };
 
 #endif
