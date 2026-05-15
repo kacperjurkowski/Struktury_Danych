@@ -166,11 +166,17 @@ int main() {
                         h.extractMax();
                         end = high_resolution_clock::now();
                         break;
-                    case 3: 
+                    case 3: {
                         start = high_resolution_clock::now();
-                        cout << "Element o najwyzszym priorytecie: " << h.peek() << endl;
+                        Element top = h.peek();
                         end = high_resolution_clock::now();
+                        if(top.priority != -1) {
+                            cout << "Element o najwyzszym priorytecie: [" << top.priority << ":" << top.value << "]" << endl;
+                        } else {
+                            cout << "Kolejka jest pusta!" << endl;
+                        }
                         break;
+                    }
                     case 4: 
                         cout << "Podaj wartosc i nowy priorytet: ";
                         cin >> v_man >> p_man;
@@ -232,11 +238,17 @@ int main() {
                         pqa.extractMax();
                         end = high_resolution_clock::now();
                         break;
-                    case 3: 
+                    case 3: {
                         start = high_resolution_clock::now();
-                        cout << "Element o najwyzszym priorytecie: " << pqa.peek() << endl;
+                        Element top = pqa.peek();
                         end = high_resolution_clock::now();
+                        if(top.priority != -1) {
+                            cout << "Element o najwyzszym priorytecie: [" << top.priority << ":" << top.value << "]" << endl;
+                        } else {
+                            cout << "Kolejka jest pusta!" << endl;
+                        }
                         break;
+                    }
                     case 4: 
                         cout << "Podaj wartosc i nowy priorytet: ";
                         cin >> v_man >> p_man;
@@ -261,9 +273,10 @@ int main() {
                         pqa.return_size();
                         cout << "Aktualny rozmiar struktury: " << pqa.return_size() << endl;
                         end = high_resolution_clock::now();
+                        system("pause");
                         break;
                 }
-                if (wyborP2 != 0 && wyborP1 != 7) {
+                if (wyborP2 != 0 && wyborP2 != 7) {
                     auto duration = duration_cast<nanoseconds>(end - start);
                     cout << "\nCzas wykonania operacji: " << duration.count() << " ns\n";
                     system("pause");

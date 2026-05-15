@@ -31,9 +31,9 @@ int PriorityQueueArray::extractMax() {
     return result;
 }
 
-int PriorityQueueArray::peek() {
+Element PriorityQueueArray::peek() {
     if (list.getSize() == 0) {
-        return -1;
+        return {-1, -1};
     }
     
     int maxIdx = 0;
@@ -43,7 +43,7 @@ int PriorityQueueArray::peek() {
             maxIdx = i;
         }
     }
-    return list.get(maxIdx).value;
+    return list.get(maxIdx);
 }
 
 void PriorityQueueArray::increase_key(int e, int p) { modifyKey(e, p); }

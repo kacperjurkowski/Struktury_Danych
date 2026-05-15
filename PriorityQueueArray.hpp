@@ -13,7 +13,7 @@ public:
 
     void insert(int e, int p);                      //Dodanie elementu do kolejki
     int extractMax();                               //Usunięcie elementu o najwyższym priorytecie
-    int peek();                                     //Podejrzenie maxa
+    Element peek();                                     //Podejrzenie maxa
 
     void increase_key(int e, int p);
     void decrease_key(int e, int p);

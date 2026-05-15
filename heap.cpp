@@ -53,11 +53,11 @@ void Heap::extractMax() {
     }   
 }
 
-int Heap::peek() {
+Element Heap::peek() {
     if (data.getSize() > 0) {
-        return data.get(0).value;
+        return data.get(0);
     }
-    return -1;
+    return {-1, -1};
 }
 
 void Heap::decrease_key(int e, int p) {
