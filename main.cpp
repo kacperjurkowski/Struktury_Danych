@@ -17,14 +17,13 @@ using namespace std::chrono;
 template <typename T>
 void generujDane(T &ds, int quantity, mt19937 &gen) {
     //Zakresy (4 bajtowa liczba całkowita / większy priorytet niż wielkość struktury)
-    uniform_int_distribution<int> distValue(0, 100000);
     uniform_int_distribution<int> distPriority(0, quantity * 10);
 
     //Pętla przechodząca przez strukturę o danej wielkości
     for (int i = 0; i < quantity; i++) {
 
         //Dodanie wartość i priorytet
-        ds.insert(distValue(gen), distPriority(gen));
+        ds.insert(i, distPriority(gen));
     }
 }
 
@@ -41,20 +40,20 @@ void runResearch(string fileName, string structureName) {
     int seedy[] = {1670, 42, 123, 2024, 67, 888, 55, 99, 1010, 11};
 
     for (int n : rozmiary) {
-        vector<long long> t_ins, t_ext, t_peek, t_dec, t_inc, t_ret, t_heaup, t_headown;
+        vector<long long> t_ins, t_ext, t_peek, t_dec, t_inc, t_ret;
 
         for (int s : seedy) {
-            T ds; //Tworzenie nowej instancji struktury (Tablica Dynamiczna/Lista Jednokierunkowa/Lista Dwukierunkowa)
+            T ds; //Tworzenie nowej instancji struktury (Kolejka Priorytetowa - Kopiec/Tablica Nieposortowana)
             mt19937 gen(s); //Generator o konkretnym seedzie
 
             generujDane(ds, n, gen);        //Wypełnienie struktury do rozmiaru N
 
             //Zakresy (4 bajtowa liczba całkowita / większy priorytet niż wielkość struktury)
-            uniform_int_distribution<int> distValue(0, 100000);
+            uniform_int_distribution<int> distValue(0, n - 1);
             uniform_int_distribution<int> distPriority(0, n * 10);
 
-            int v = distValue(gen);         //Wygenerowany element
-            int p = distPriority(gen);      //Wygenerowany priorytet
+            int v = distValue(gen);           //Wygenerowany element
+            int p = distPriority(gen);          //Wygenerowany priorytet
 
             high_resolution_clock::time_point start, stop;
 
@@ -132,7 +131,7 @@ int main() {
     high_resolution_clock::time_point start, end;
 
     do {
-        cout << "--- HUB PROJEKTOWY: STRUKTURY DANYCH ---\n";
+        cout << "--- HUB PROJEKTOWY: STRUKTURY DANYCH ---\n"; //Zmienić wykonuje ich serię (np. 100 powtórzeń) dla każdego seeda
         cout << "1. Kolejka Priorytetowa - Kopiec\n";
         cout << "2. Kolejka Priorytetowa - Tablica Nieposortowana\n";
         cout << "3. Automatyczne Badania\n";
