@@ -8,3 +8,4 @@ Witaj w repozytorium poświęconym analizie wydajnościowej podstawowych struktu
 🚀 Gdzie szukać plików?
 Aby pobrać projekt lub przejrzeć kod, przejdź na branch:
 👉 **[project_1](https://github.com/kacperjurkowski/Struktury_Danych/tree/project_1)** 👈
+👉 **[project_1](https://github.com/kacperjurkowski/Struktury_Danych/tree/project_2)** 👈
