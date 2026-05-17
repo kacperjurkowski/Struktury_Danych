@@ -48,11 +48,12 @@ void DynamicArray::removeEnd() {
 }
 
 void DynamicArray::removeAt(int index) {
-    
+    //Sprawdzenie, czy index znajduej się w przedziale
     if (index < 0 || index >= size) {
         return;
     }
-
+    
+    //Pętla przesuwająca elementy w lewo, nadpisująca usunięty rekord
     for(int i = index; i < size - 1; i++){
         array[i] = array[i + 1];
     }
@@ -60,8 +61,8 @@ void DynamicArray::removeAt(int index) {
 }
 
 void DynamicArray::clear() {
-    delete[] array;
-    array = nullptr;
-    size = 0;
-    capacity = 0;
+    delete[] array;             //Zwolnienie pamięci na tablicę
+    array = nullptr;            //Wyzerowanie wskaźnika
+    size = 0;                   //Reset liczby elementów
+    capacity = 0;               //Reset pojemności fizycznej
 }

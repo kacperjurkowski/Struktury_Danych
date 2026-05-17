@@ -1,6 +1,6 @@
 #include <iostream>
-#include <random> //Losowość
-#include <chrono> //Do pomiaru czasu
+#include <random> //Liczby pseudolosowe
+#include <chrono> //Pomiar czasu
 #include <fstream> //Zapis i odczyt danych
 #include <vector> //Kontener do przechowywania czasów pomiarów
 #include <numeric> //Dla acumulate
@@ -17,12 +17,12 @@ using namespace std::chrono;
 template <typename T>
 void generujDane(T &ds, int quantity, mt19937 &gen) {
     //Zakresy (4 bajtowa liczba całkowita / większy priorytet niż wielkość struktury)
+    //Zakres priorytetów jest 10-krotnie większy od rozmiaru struktury
     uniform_int_distribution<int> distPriority(0, quantity * 10);
 
-    //Pętla przechodząca przez strukturę o danej wielkości
     for (int i = 0; i < quantity; i++) {
 
-        //Dodanie wartość i priorytet
+        //Dodanie wartość i priorytet (wartość - unikalna, priorytet - losowy   )
         ds.insert(i, distPriority(gen));
     }
 }
@@ -40,6 +40,7 @@ void runResearch(string fileName, string structureName) {
     int seedy[] = {1670, 42, 123, 2024, 67, 888, 55, 99, 1010, 11};
 
     for (int n : rozmiary) {
+        //Wektory przechowujące czasy dla każdej z prób
         vector<long long> t_ins, t_ext, t_peek, t_dec, t_inc, t_ret;
 
         for (int s : seedy) {
@@ -124,7 +125,7 @@ int main() {
     mt19937 gen(1670); //Seed nadany do testów manualnych
 
     int wybor, wyborP1, wyborP2, wyborP3, v_man, p_man;;
-    int quantity = 50;
+    int quantity = 50; //Domyślny rozmiar 
 
     Heap h;
     PriorityQueueArray pqa;

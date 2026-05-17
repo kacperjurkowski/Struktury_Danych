@@ -5,22 +5,22 @@
 class Heap {
 
 private:
-    DynamicArray data;
+    DynamicArray data;      //Wewnętrzna tablica dynamiczna przechowująca elementy kopca
 
 public:
     Heap();     //Konstruktor
     ~Heap();    //Dekonstruktor
 
-    void insert(int e, int p);          //Dodanie elementu e o priorytecie p
-    void extractMax();                 //Usunięcie i zwrócenie elementu o największym priorytecie
-    Element peek();                        //Zwrócenie elementu o największym priorytecie,
-    void decrease_key(int e, int p);    //Zmniejszenie priorytetu elementu e na p
-    void increase_key(int e, int p);    //Zwiększenie priorytetu elementu e na p
-    int return_size() const { return data.getSize(); }              //Zwrócenie rozmiaru
-    void display();                       //Wyświetlenie kopca
+    void insert(int e, int p);                           //Dodanie elementu e o priorytecie p
+    void extractMax();                                   //Usunięcie i zwrócenie elementu o największym priorytecie
+    Element peek();                                      //Zwrócenie elementu o największym priorytecie,
+    void decrease_key(int e, int p);                     //Zmniejszenie priorytetu elementu e na p
+    void increase_key(int e, int p);                     //Zwiększenie priorytetu elementu e na p
+    int return_size() const { return data.getSize(); }   //Zwrócenie rozmiaru
+    void display();                                      //Wyświetlenie kopca
 
-    void heapify_up(int index);                  //
-    void heapify_down(int index);                //
+    void heapify_up(int index);                          //Funkcja naprawiająca kopiec w górę
+    void heapify_down(int index);                        //Funkcja naprawiająca kopiec w dół
 
 };
 

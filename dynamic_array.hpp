@@ -3,8 +3,8 @@
 
 // Struktura elementu kolejki
 struct Element {
-    int priority; 
-    int value;    
+    int priority;                   //Priorytet
+    int value;                      //Wartość
 };
 
 class DynamicArray {
@@ -25,7 +25,8 @@ public:
     // Metody pomocnicze dla kolejki
     Element& get(int index) { return array[index]; }
     int getSize() const { return size; }
-    void clear();
+    
+    void clear();                   //Przywrócenie struktury do stanu początkowego
 };
 
 #endif
