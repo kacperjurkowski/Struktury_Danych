@@ -55,9 +55,9 @@ void CuckooHash::rehash() {
     delete[] oldTable2;
 }
 
-void CuckooHash::insert(int key, const std::string& value) {
+void CuckooHash::insert(int key, int value) {
     // Obsługa aktualizacji wartości, jeśli klucz już istnieje w tablicy
-    std::string existingValue;
+    int existingValue;
     if (find(key, existingValue)) {
         if (table1[hash1(key)].isOccupied && table1[hash1(key)].key == key) table1[hash1(key)].value = value;
         else table2[hash2(key)].value = value;
@@ -65,7 +65,7 @@ void CuckooHash::insert(int key, const std::string& value) {
     }
 
     int currentKey = key;
-    std::string currentValue = value;
+    int currentValue = value;
     int maxLoops = capacity * 2;
 
     // Pętla wyszukiwania miejsca i eksmisji
@@ -81,7 +81,7 @@ void CuckooHash::insert(int key, const std::string& value) {
         }
         // Wypchnięcie starego elementu z pierwszej tablicy
         int tempKey = table1[idx1].key;
-        std::string tempValue = table1[idx1].value;
+        int tempValue = table1[idx1].value;
         table1[idx1].key = currentKey; table1[idx1].value = currentValue;
         currentKey = tempKey; currentValue = tempValue;
 
@@ -104,7 +104,7 @@ void CuckooHash::insert(int key, const std::string& value) {
     // Wykryto cykl (brak wolnego miejsca): wymuszone wstawienie na losowy indeks
     int forcedIdx = hash1(currentKey);
     int tempKey = table1[forcedIdx].key;
-    std::string tempValue = table1[forcedIdx].value;
+    int tempValue = table1[forcedIdx].value;
     
     table1[forcedIdx].key = currentKey; table1[forcedIdx].value = currentValue;
     size++; // Element fizycznie zajął slot, więc zwiększamy rozmiar przed rehashem
@@ -121,7 +121,7 @@ void CuckooHash::remove(int key) {
     else if (table2[idx2].isOccupied && table2[idx2].key == key) { table2[idx2].isOccupied = false; size--; }
 }
 
-bool CuckooHash::find(int key, std::string& outValue) const {
+bool CuckooHash::find(int key, int& outValue) const {
     int idx1 = hash1(key), idx2 = hash2(key);
     // Weryfikacja obecności klucza na obu możliwych pozycjach indeksowych
     if (table1[idx1].isOccupied && table1[idx1].key == key) { outValue = table1[idx1].value; return true; }

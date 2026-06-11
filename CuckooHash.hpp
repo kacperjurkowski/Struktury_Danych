@@ -2,16 +2,15 @@
 #define CUCKOO_HASH_HPP
 
 #include <iostream>
-#include <string>
 
 class CuckooHash {
 private:
     struct Entry {
         int key;
-        std::string value;
+        int value;
         bool isOccupied;
 
-        Entry() : key(0), value(""), isOccupied(false) {}
+        Entry() : key(0), value(0), isOccupied(false) {}
     };
 
     Entry* table1;      // Pierwsza alternatywna tablica
@@ -35,9 +34,9 @@ public:
     CuckooHash(const CuckooHash&) = delete;
     CuckooHash& operator=(const CuckooHash&) = delete;
 
-    void insert(int key, const std::string& value);
+    void insert(int key, int value);
     void remove(int key);
-    bool find(int key, std::string& outValue) const;
+    bool find(int key, int& outValue) const;
 
     void display() const;
     int getSize() const { return size; }
