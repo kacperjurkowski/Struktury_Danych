@@ -44,7 +44,7 @@ void runResearch(string fileName, string structureName) {
         vector<long long> t_ins, t_rem;
 
         for (int s : seedy) {
-            T struktura(n); //Tworzenie nowej instancji struktury (Kolejka Priorytetowa - Kopiec/Tablica Nieposortowana)
+            T struktura(200); //Tworzenie nowej instancji struktury (Tablica mieszająca: metoda łańcuchowa, drzewo AVL, hashowanie kukułkowe)
             mt19937 gen(s); //Generator o konkretnym seedzie
 
             generujDane(struktura, n, gen);        //Wypełnienie struktury do rozmiaru N
@@ -290,7 +290,7 @@ int main() {
             clearFile.close();
             
             runResearch<HashTableChaining>("wyniki.txt", "Chaining_Lista");
-            //runResearch<HashTableChaining>("wyniki.txt", "Chaining_AVL");
+            runResearch<HashTableAVL>("wyniki.txt", "Chaining_AVL");
             runResearch<CuckooHash>("wyniki.txt", "Cuckoo_Hashing");
 
             cout << "Wszystkie pomiary zakonczone!" << endl;
