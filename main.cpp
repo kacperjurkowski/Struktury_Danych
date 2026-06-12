@@ -8,7 +8,7 @@
 
 #include "CuckooHash.hpp"
 #include "HashTableChaining.hpp"
-//#include "HashTableAVL.hpp"
+#include "HashTableAVL.hpp"
 
 using namespace std;
 using namespace std::chrono;
@@ -102,7 +102,7 @@ int main() {
 
     //Alokacja struktur do testów
     HashTableChaining hll(quantity); 
-    //HashTableAVL hta;
+    HashTableAVL hta(quantity);
     CuckooHash ch;
 
     high_resolution_clock::time_point start, end;
@@ -188,26 +188,32 @@ int main() {
                 switch(wyborMenu){ // W Budowie
                     case 1: 
                         start = high_resolution_clock::now();
-                        //generujDane(hta, quantity, gen); 
+                        generujDane(hta, quantity, gen); 
                         end = high_resolution_clock::now();
                         break;
                     case 2:
+                        cout << "Podaj klucz oraz wartosc: " << endl;
+                        cin >> k >> v;
                         start = high_resolution_clock::now();
-                        //hll.insert(k, v);
+                        hta.insert(k, v);
                         end = high_resolution_clock::now();
                         break;
                     case 3:
+                        cout << "Podaj klucz do usuniecia: " << endl;
+                        cin >> k;
                         start = high_resolution_clock::now();
-                        //hll.remove(k);
+                        hta.remove(k);
                         end = high_resolution_clock::now();
                         break;
                     case 4:
+                        cout << "Podaj klucz do znalezienia: " << endl;
+                        cin >> k;
                         start = high_resolution_clock::now();
-                        //hll.find(k);
+                        hta.find(k);
                         end = high_resolution_clock::now();
                         break;
                     case 5:
-                        //hll.display();
+                        hta.display();
                         system("pause");
                         break;
                 }
