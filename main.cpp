@@ -68,9 +68,9 @@ void runResearch(string fileName, string structureName) {
 
             // 2. Remove
             start = high_resolution_clock::now();
-            ds.extractMax(randomKey);
+            ds.remove(randomKey);
             stop = high_resolution_clock::now();
-            t_ext.push_back(duration_cast<nanoseconds>(stop - start).count());
+            t_rem.push_back(duration_cast<nanoseconds>(stop - start).count());
             ds.insert(randomKey, randomValue);
 
         }
@@ -95,15 +95,21 @@ void runResearch(string fileName, string structureName) {
 int main() {
     mt19937 gen(1670); //Seed nadany do testów manualnych
 
-    int wybor, wyborP1, wyborP2, wyborP3, v_man, p_man;;
+    int wybor, wyborMenu;
     int quantity = 20; //Domyślny rozmiar 
 
-    CuckooHash h;
-    HashLinkedList pqa;
+    int k, v, outVal; //Klucz i wartość
+
+    //Alokacja struktur do testów
+    HashTableChaining hll(quantity); 
+    //HashTableAVL hta;
+    CuckooHash ch;
+
     high_resolution_clock::time_point start, end;
 
     do {
-        cout << "--- HUB PROJEKTOWY: STRUKTURY DANYCH ---\n"; //Zmienić wykonuje ich serię (np. 100 powtórzeń) dla każdego seeda
+        system("cls");
+        cout << "--- HUB PROJEKTOWY: STRUKTURY DANYCH ---\n";
         cout << "1. Tablica mieszajaca - Lancuchowa (Lista)\n";
         cout << "2. Tablica mieszajaca - Lancuchowa (Drzewo AVL)\n";
         cout << "3. Tablica mieszajaca - Cuckoo Hashing\n";
@@ -115,7 +121,7 @@ int main() {
         if(wybor == 1){
             do {
                 system("cls");
-                cout << "--- MENU: KOPIEC ---\n";
+                cout << "--- MENU: Tablica mieszajaca - Lista ---\n";
                 cout << "1. Generuj losowe dane (" << quantity << ")\n";
                 cout << "2. Insert\n";
                 cout << "3. Remove\n";
@@ -123,82 +129,150 @@ int main() {
                 cout << "5. Wyswietl (Display))\n";
                 cout << "0. Powrot do menu glownego\n";
                 cout << "Wybor: ";
-                cin >> wyborP1;
+                cin >> wyborMenu;
 
-                switch(wyborP1){
+                switch(wyborMenu){
                     case 1: 
                         start = high_resolution_clock::now();
-                        generujDane(h, quantity, gen); 
+                        generujDane(hll, quantity, gen); 
                         end = high_resolution_clock::now();
+                        break;
+                    case 2:
+                        cout << "Podaj klucz oraz wartość: " << endl;
+                        cin >> k >> v;
+                        start = high_resolution_clock::now();
+                        hll.insert(k, v);
+                        end = high_resolution_clock::now();
+                        break;
+                    case 3:
+                        cout << "Podaj klucz do usuniecia: " << endl;
+                        cin >> k;
+                        start = high_resolution_clock::now();
+                        hll.remove(k);
+                        end = high_resolution_clock::now();
+                        break;
+                    case 4:
+                        cout << "Podaj klucz do znalezienia: " << endl;
+                        cin >> k;
+                        start = high_resolution_clock::now();
+                        hll.find(k);
+                        end = high_resolution_clock::now();
+                        break;
+                    case 5:
+                        hll.display();
                         break;
                 }
 
-                if (wyborP1 != 0 && wyborP1 != 7) {
+                if (wyborMenu != 0 && wyborMenu != 5) {
                     auto duration = duration_cast<nanoseconds>(end - start);
                     cout << "\nCzas wykonania operacji: " << duration.count() << " ns\n";
                     system("pause");
                 }
-            } while (wyborP1 != 0);
+            } while (wyborMenu != 0);
         }
 
         if(wybor == 2){
             do {
                 system("cls");
-                cout << "--- LISTA NIEPOSORTOWANA ---\n";
+                cout << "--- MENU: Tablica mieszajaca - Drzewo AVL ---\n";
                 cout << "1. Generuj losowe dane (" << quantity << ")\n";
-                cout << "2. ExtractMax\n";
-                cout << "3. Peek\n";
-                cout << "4. Decrease_key\n";
-                cout << "5. Increase_key\n";
-                cout << "6. Wyswietl (Display)\n";
-                cout << "7. Rozmiar (Return_size)\n";
+                cout << "2. Insert\n";
+                cout << "3. Remove\n";
+                cout << "4. Szukaj (find)\n";
+                cout << "5. Wyswietl (Display))\n";
                 cout << "0. Powrot do menu glownego\n";
                 cout << "Wybor: ";
-                cin >> wyborP2;
+                cin >> wyborMenu;
 
-                switch(wyborP2){
+                switch(wyborMenu){ // W Budowie
                     case 1: 
                         start = high_resolution_clock::now();
-                        generujDane(pqa, quantity, gen); 
+                        //generujDane(hta, quantity, gen); 
                         end = high_resolution_clock::now();
                         break;
+                    case 2:
+                        start = high_resolution_clock::now();
+                        //hll.insert(k, v);
+                        end = high_resolution_clock::now();
+                        break;
+                    case 3:
+                        start = high_resolution_clock::now();
+                        //hll.remove(k);
+                        end = high_resolution_clock::now();
+                        break;
+                    case 4:
+                        start = high_resolution_clock::now();
+                        //hll.find(k);
+                        end = high_resolution_clock::now();
+                        break;
+                    case 5:
+                        //hll.display();
+                        break;
                 }
-                if (wyborP2 != 0 && wyborP2 != 7) {
+
+                if (wyborMenu != 0 && wyborMenu != 5) {
                     auto duration = duration_cast<nanoseconds>(end - start);
                     cout << "\nCzas wykonania operacji: " << duration.count() << " ns\n";
                     system("pause");
                 }
-            } while (wyborP2 != 0);
+            } while (wyborMenu != 0);
         }
 
         if(wybor == 3){
             do {
                 system("cls");
-                cout << "--- LISTA NIEPOSORTOWANA ---\n";
+                cout << "--- Tablica mieszajaca - Cuckoo Hashing ---\n";
                 cout << "1. Generuj losowe dane (" << quantity << ")\n";
-                cout << "2. ExtractMax\n";
-                cout << "3. Peek\n";
-                cout << "4. Decrease_key\n";
-                cout << "5. Increase_key\n";
-                cout << "6. Wyswietl (Display)\n";
-                cout << "7. Rozmiar (Return_size)\n";
+                cout << "2. Insert\n";
+                cout << "3. Remove\n";
+                cout << "4. Szukaj (find)\n";
+                cout << "5. Wyswietl (Display))\n";
                 cout << "0. Powrot do menu glownego\n";
                 cout << "Wybor: ";
-                cin >> wyborP2;
+                cin >> wyborMenu;
 
-                switch(wyborP2){
+                switch(wyborMenu){
                     case 1: 
                         start = high_resolution_clock::now();
-                        generujDane(pqa, quantity, gen); 
+                        generujDane(ch, quantity, gen); 
                         end = high_resolution_clock::now();
                         break;
+                    case 2:
+                        cout << "Podaj klucz oraz wartość: " << endl;
+                        cin >> k >> v;
+                        start = high_resolution_clock::now();
+                        ch.insert(k, v);
+                        end = high_resolution_clock::now();
+                        break;
+                    case 3:
+                        cout << "Podaj klucz do usuniecia: " << endl;
+                        cin >> k;
+                        start = high_resolution_clock::now();
+                        ch.remove(k);
+                        end = high_resolution_clock::now();
+                        break;
+                    case 4:
+                        cout << "Podaj klucz do znalezienia: " << endl;
+                        cin >> k;
+                        start = high_resolution_clock::now();
+                        if(ch.find(k, outVal)) {
+                            cout << "Znaleziono wartosc: " << outVal << endl;
+                        } else {
+                            cout << "Nieznaleziono wartosci." << endl;
+                        }
+                        end = high_resolution_clock::now();
+                        break;
+                    case 5:
+                        ch.display();
+                        break;
                 }
-                if (wyborP2 != 0 && wyborP2 != 7) {
+
+                if (wyborMenu != 0 && wyborMenu != 5) {
                     auto duration = duration_cast<nanoseconds>(end - start);
                     cout << "\nCzas wykonania operacji: " << duration.count() << " ns\n";
                     system("pause");
                 }
-            } while (wyborP2 != 0);
+            } while (wyborMenu != 0);
         }
 
         if (wybor == 4){
@@ -208,7 +282,7 @@ int main() {
             
             runResearch<HashTableChaining>("wyniki.txt", "Chaining_Lista");
             //runResearch<HashTableChaining>("wyniki.txt", "Chaining_AVL");
-            //runResearch<HashTableChaining>("wyniki.txt", "Cuckoo_Hashing");
+            runResearch<CuckooHash>("wyniki.txt", "Cuckoo_Hashing");
 
             cout << "Wszystkie pomiary zakonczone!" << endl;
             break;
