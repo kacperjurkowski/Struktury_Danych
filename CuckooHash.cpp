@@ -14,6 +14,8 @@ CuckooHash::CuckooHash() {
     hashSeed2 = std::rand() % 97 + 13;
 }
 
+CuckooHash::CuckooHash(int dummyCapacity) : CuckooHash() {}
+
 CuckooHash::~CuckooHash() {
     delete[] table1;
     delete[] table2;
@@ -138,4 +140,4 @@ void CuckooHash::display() const {
             else std::cout << "[" << i << "]: EMPTY\n";
         }
     }
-}
+}   

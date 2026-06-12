@@ -1,4 +1,4 @@
-#include "HashLinkedList(p).hpp"
+#include "HashLinkedList.hpp"
 
 HashLinkedList::HashLinkedList() : head(nullptr), size(0) {}
 

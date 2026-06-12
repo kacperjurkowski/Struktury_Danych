@@ -28,6 +28,7 @@ private:
 
 public:
     CuckooHash();
+    CuckooHash(int dummyCapacity);
     ~CuckooHash();
 
     // Zablokowanie kopiowania

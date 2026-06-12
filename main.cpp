@@ -15,7 +15,7 @@ using namespace std::chrono;
 
 //Szablon do wypełnienia struktury losowymi danymi z zakresu 0-9999
 template <typename T>
-void generujDane(T &ds, int quantity, mt19937 &gen) {
+void generujDane(T &struktura, int quantity, mt19937 &gen) {
     //Zakresy (4 bajtowa liczba całkowita / większy priorytet niż wielkość struktury)
     //Zakres priorytetów jest 10-krotnie większy od rozmiaru struktury
     uniform_int_distribution<int> distValue(0, quantity * 10);
@@ -23,7 +23,7 @@ void generujDane(T &ds, int quantity, mt19937 &gen) {
     for (int i = 0; i < quantity; i++) {
 
         //Dodanie klucza i wartości (klucz - unikalna, wartość - losowa)
-        ds.insert(i, distValue(gen));
+        struktura.insert(i, distValue(gen));
     }
 }
 
@@ -44,10 +44,10 @@ void runResearch(string fileName, string structureName) {
         vector<long long> t_ins, t_rem;
 
         for (int s : seedy) {
-            T ds; //Tworzenie nowej instancji struktury (Kolejka Priorytetowa - Kopiec/Tablica Nieposortowana)
+            T struktura(n); //Tworzenie nowej instancji struktury (Kolejka Priorytetowa - Kopiec/Tablica Nieposortowana)
             mt19937 gen(s); //Generator o konkretnym seedzie
 
-            generujDane(ds, n, gen);        //Wypełnienie struktury do rozmiaru N
+            generujDane(struktura, n, gen);        //Wypełnienie struktury do rozmiaru N
 
             //Zakresy (4 bajtowa liczba całkowita / większy priorytet niż wielkość struktury)
             uniform_int_distribution<int> distValue(0, n * 10);
@@ -61,17 +61,17 @@ void runResearch(string fileName, string structureName) {
             // 1. Insert
             int uniqueKey = n + 10;
             start = high_resolution_clock::now();
-            ds.insert(uniqueKey, randomValue);
+            struktura.insert(uniqueKey, randomValue);
             stop = high_resolution_clock::now();
             t_ins.push_back(duration_cast<nanoseconds>(stop - start).count());
-            ds.remove(uniqueKey);
+            struktura.remove(uniqueKey);
 
             // 2. Remove
             start = high_resolution_clock::now();
-            ds.remove(randomKey);
+            struktura.remove(randomKey);
             stop = high_resolution_clock::now();
             t_rem.push_back(duration_cast<nanoseconds>(stop - start).count());
-            ds.insert(randomKey, randomValue);
+            struktura.insert(randomKey, randomValue);
 
         }
 
@@ -138,7 +138,7 @@ int main() {
                         end = high_resolution_clock::now();
                         break;
                     case 2:
-                        cout << "Podaj klucz oraz wartość: " << endl;
+                        cout << "Podaj klucz oraz wartosc: " << endl;
                         cin >> k >> v;
                         start = high_resolution_clock::now();
                         hll.insert(k, v);
@@ -160,6 +160,7 @@ int main() {
                         break;
                     case 5:
                         hll.display();
+                        system("pause");
                         break;
                 }
 
@@ -207,6 +208,7 @@ int main() {
                         break;
                     case 5:
                         //hll.display();
+                        system("pause");
                         break;
                 }
 
@@ -238,7 +240,7 @@ int main() {
                         end = high_resolution_clock::now();
                         break;
                     case 2:
-                        cout << "Podaj klucz oraz wartość: " << endl;
+                        cout << "Podaj klucz oraz wartosc: " << endl;
                         cin >> k >> v;
                         start = high_resolution_clock::now();
                         ch.insert(k, v);
@@ -264,6 +266,7 @@ int main() {
                         break;
                     case 5:
                         ch.display();
+                        system("pause");
                         break;
                 }
 

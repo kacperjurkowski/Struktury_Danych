@@ -1,7 +1,7 @@
 #ifndef HASHTABLECHAINING_HPP
 #define HASHTABLECHAINING_HPP
 
-#include "HashLinkedList(p).hpp"
+#include "HashLinkedList.hpp"
 
 class HashTableChaining {
 private:
